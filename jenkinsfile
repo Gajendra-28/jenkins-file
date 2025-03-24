@@ -1,0 +1,23 @@
+pipeline {
+  agent any
+tools{
+			tool name: 'mymaven', type: 'maven'
+	}
+stages{
+  stage('clone Repo'){
+    step{
+        git 'https://github.com/Sonal0409/DevOpsCodeDemo'
+  }
+}
+  stage('Build Code'){
+    step{
+        mvn 'package'
+  }
+}
+  stage('Deploy Code'){
+    step{
+        deploy adapters: [tomcat9(credentialsId: 'tomcatcredenctials', path: '', url: 'http://35.92.65.58:8080/')], contextPath: null, war: '**/*.war'
+  }
+}
+
+}
